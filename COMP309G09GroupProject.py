@@ -16,6 +16,7 @@ Created on Thu Nov 12 16:19:50 2020
 
 import pandas as pd
 import os
+import numpy as np
 path = "D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/"
 filename = 'Bicycle_Thefts.csv'
 fullpath = os.path.join(path,filename)
@@ -37,6 +38,122 @@ data_bicycle_group09['Cost_of_Bike'].describe()
 data_bicycle_group09['Bike_Make'].describe()
 data_bicycle_group09['Bike_Type'].describe()
 data_bicycle_group09['Bike_Speed'].describe()
+
+
+data_bicycle_group09 = pd.read_csv(fullpath)
+
+# For Cost_of_Bike, fill missing with median
+# check how many null before fill the missing 
+print(data_bicycle_group09['Cost_of_Bike'].isnull().sum()) #1536
+median = data_bicycle_group09['Cost_of_Bike'].median()
+print(median)
+# fill missing value with median
+data_bicycle_group09['Cost_of_Bike'].fillna(median, inplace= True)
+# check how many null after fill the missing 
+print(data_bicycle_group09['Cost_of_Bike'].isnull().sum())  #0
+
+
+# For Bike_Model, fill missing with "UNKNOWN"
+# check how many null before fill the missing 
+print(data_bicycle_group09['Bike_Model'].isnull().sum().sum()) #8140
+data_bicycle_group09['Bike_Model'].fillna('UNKNOWN', inplace= True)
+# check how many null after fill the missing 
+print(data_bicycle_group09['Bike_Model'].isnull().sum())  #0
+
+
+# For Bike_Colour, fill missing with "UNKNOWN"
+# check how many null before fill the missing 
+print(data_bicycle_group09['Bike_Colour'].isnull().sum().sum()) #1729
+data_bicycle_group09['Bike_Colour'].fillna('UNKNOWN', inplace= True)
+# check how many null after fill the missing 
+print(data_bicycle_group09['Bike_Colour'].isnull().sum())  #0
+
+
+
+from matplotlib import pyplot as plt
+#create a scatterplot
+fig_Premise_Cost = data_bicycle_group09.plot(kind='scatter',x='Premise_Type',y='Cost_of_Bike')
+fig_Location_Cost = data_bicycle_group09.plot(kind='scatter',x='Location_Type',y='Cost_of_Bike')
+fig_Division_Cost = data_bicycle_group09.plot(kind='scatter',x='Division',y='Cost_of_Bike')
+
+
+# Save the scatter plot
+figfilename = "ScatterPlot_Liping.pdf"
+figfullpath = os.path.join(path, figfilename)
+fig_Premise_Cost.figure.savefig(figfullpath)
+
+
+ # Plot a histogram
+import matplotlib.pyplot as plt
+hist_year= plt.hist(data_bicycle_group09['Occurrence_Year'],bins=12)
+plt.xlabel('Occurrence_Year')
+plt.ylabel('and Stolen')
+plt.title('Occurrence_Year and Stolen')
+
+import matplotlib.pyplot as plt
+hist_month= plt.hist(data_bicycle_group09['Occurrence_Month'],bins=12)
+plt.xlabel('Occurrence_Month')
+plt.ylabel('and Stolen')
+plt.title('Occurrence_Month and Stolen')
+
+
+ # Plot a histogram
+import matplotlib.pyplot as plt
+hist= plt.hist(data_bicycle_group09['Occurrence_Time'],bins=24)
+plt.xlabel('Occurrence_Time')
+plt.ylabel('and Stolen')
+plt.title('Occurrence_Time and Stolen')
+
+ # Plot a histogram
+import matplotlib.pyplot as plt
+hist_location= plt.hist(data_bicycle_group09['Location_Type'],bins=12)
+plt.xlabel('Location_Type')
+plt.ylabel('and Stolen')
+plt.title('Location_Type and Stolen')
+
+ # Plot a histogram
+import matplotlib.pyplot as plt
+hist_Premise= plt.hist(data_bicycle_group09['Premise_Type'],bins=12)
+plt.xlabel('Premise_Type')
+plt.ylabel('Stolen')
+plt.title('Premise_Type and Stolen')
+
+import matplotlib.pyplot as plt
+hist_Division= plt.hist(data_bicycle_group09['Division'],bins=12)
+plt.xlabel('Division')
+plt.ylabel('Stolen')
+plt.title('Division and Stolen')
+
+
+# Plot a boxplot
+import matplotlib.pyplot as plt
+plt.boxplot(data_bicycle_group09['Occurrence_Day'])
+plt.ylabel('Occurrence_Day')
+plt.title('Box Plot of Occurrence_Day')
+
+# Plot a boxplot
+import matplotlib.pyplot as plt
+plt.boxplot(data_bicycle_group09['Cost_of_Bike'])
+plt.ylabel('Cost_of_Bike')
+plt.title('Box Plot of Cost_of_Bike')
+
+# Plot a boxplot
+import matplotlib.pyplot as plt
+plt.boxplot(data_bicycle_group09['X'])
+plt.ylabel('X')
+plt.title('Box Plot of X')
+
+# Plot a boxplot
+import matplotlib.pyplot as plt
+plt.boxplot(data_bicycle_group09['Y'])
+plt.ylabel('Y')
+plt.title('Box Plot of Y')
+
+
+
+
+
+
 
 
 
