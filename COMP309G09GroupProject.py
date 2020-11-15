@@ -29,14 +29,34 @@ data_bicycle_group09.describe
 data_bicycle_group09.dtypes
 data_bicycle_group09.head(5)
 
+data_bicycle_group09['Division'].describe()
+data_bicycle_group09['Division'].unique()
+
 data_bicycle_group09['Neighbourhood'].describe()
+data_bicycle_group09['Neighbourhood'].unique()
+
 data_bicycle_group09['Premise_Type'].describe()
+data_bicycle_group09['Premise_Type'].unique()
+
 data_bicycle_group09['Location_Type'].describe()
+data_bicycle_group09['Location_Type'].unique()
+
 data_bicycle_group09['Bike_Make'].describe()
+data_bicycle_group09['Bike_Make'].unique()
+
 data_bicycle_group09['Bike_Colour'].describe()
+data_bicycle_group09['Bike_Colour'].unique()
+
 data_bicycle_group09['Cost_of_Bike'].describe()
+data_bicycle_group09['Cost_of_Bike'].unique()
+
 data_bicycle_group09['Bike_Make'].describe()
+data_bicycle_group09['Bike_Make'].unique()
+
 data_bicycle_group09['Bike_Type'].describe()
+data_bicycle_group09['Bike_Type'].unique()
+
+data_bicycle_group09['Bike_Speed'].describe()
 data_bicycle_group09['Bike_Speed'].describe()
 
 
@@ -149,6 +169,7 @@ plt.boxplot(data_bicycle_group09['Y'])
 plt.ylabel('Y')
 plt.title('Box Plot of Y')
 
+# Not finish yet
 
 
 
