@@ -21,80 +21,102 @@ path = "D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/"
 filename = 'Bicycle_Thefts.csv'
 fullpath = os.path.join(path,filename)
 print(fullpath)
-data_bicycle_group09 = pd.read_csv(fullpath)
-data_bicycle_group09.columns.values
-data_bicycle_group09.shape
-data_bicycle_group09.describe()
-data_bicycle_group09.describe
-data_bicycle_group09.dtypes
-data_bicycle_group09.head(5)
+data_bicycle = pd.read_csv(fullpath)
+data_bicycle.columns.values
+data_bicycle.shape
+data_bicycle.describe()
+data_bicycle.describe
+data_bicycle.dtypes
+data_bicycle.head(5)
 
-data_bicycle_group09['Division'].describe()
-data_bicycle_group09['Division'].unique()
+#drop unnecessary columns
+df_g9 = data_bicycle.drop(columns = ['X', 'Y', 'FID','Index_', 'event_unique_id','Occurrence_Time'])
+pd.set_option('display.max_columns',15)
+print(df_g9.columns.values)
+print(df_g9.shape)
+print(df_g9.describe())
+print(df_g9.describe)
+print(df_g9.dtypes) 
+print(df_g9.head(5))   
 
-data_bicycle_group09['Neighbourhood'].describe()
-data_bicycle_group09['Neighbourhood'].unique()
-
-data_bicycle_group09['Premise_Type'].describe()
-data_bicycle_group09['Premise_Type'].unique()
-
-data_bicycle_group09['Location_Type'].describe()
-data_bicycle_group09['Location_Type'].unique()
-
-data_bicycle_group09['Bike_Make'].describe()
-data_bicycle_group09['Bike_Make'].unique()
-
-data_bicycle_group09['Bike_Colour'].describe()
-data_bicycle_group09['Bike_Colour'].unique()
-
-data_bicycle_group09['Cost_of_Bike'].describe()
-data_bicycle_group09['Cost_of_Bike'].unique()
-
-data_bicycle_group09['Bike_Make'].describe()
-data_bicycle_group09['Bike_Make'].unique()
-
-data_bicycle_group09['Bike_Type'].describe()
-data_bicycle_group09['Bike_Type'].unique()
-
-data_bicycle_group09['Bike_Speed'].describe()
-data_bicycle_group09['Bike_Speed'].describe()
+df_g9['datetime'] = pd.to_datetime(df_g9[])
 
 
-data_bicycle_group09 = pd.read_csv(fullpath)
+
+
+
+data_bicycle['Division'].describe()
+data_bicycle['Division'].unique()
+grouped = data_bicycle.groupby('Division')
+grouped.groups
+
+data_bicycle['Neighbourhood'].describe()
+data_bicycle['Neighbourhood'].unique()
+
+data_bicycle['Premise_Type'].describe()
+data_bicycle['Premise_Type'].unique()
+
+data_bicycle['Location_Type'].describe()
+data_bicycle['Location_Type'].unique()
+
+data_bicycle['Bike_Make'].describe()
+data_bicycle['Bike_Make'].unique()
+
+data_bicycle['Bike_Colour'].describe()
+data_bicycle['Bike_Colour'].unique()
+
+data_bicycle['Cost_of_Bike'].describe()
+data_bicycle['Cost_of_Bike'].unique()
+
+data_bicycle['Bike_Make'].describe()
+data_bicycle['Bike_Make'].unique()
+
+data_bicycle['Bike_Type'].describe()
+data_bicycle['Bike_Type'].unique()
+
+data_bicycle['Bike_Speed'].describe()
+data_bicycle['Bike_Speed'].describe()
+
+
+data_bicycle = pd.read_csv(fullpath)
 
 # For Cost_of_Bike, fill missing with median
 # check how many null before fill the missing 
-print(data_bicycle_group09['Cost_of_Bike'].isnull().sum()) #1536
-median = data_bicycle_group09['Cost_of_Bike'].median()
+print(data_bicycle['Cost_of_Bike'].isnull().sum()) #1536
+print(data_bicycle['Cost_of_Bike'].notnull().sum()) #20048
+median = data_bicycle['Cost_of_Bike'].median()
 print(median)
 # fill missing value with median
-data_bicycle_group09['Cost_of_Bike'].fillna(median, inplace= True)
+data_bicycle['Cost_of_Bike'].fillna(median, inplace= True)
 # check how many null after fill the missing 
-print(data_bicycle_group09['Cost_of_Bike'].isnull().sum())  #0
-
+print(data_bicycle['Cost_of_Bike'].isnull().sum())  #0
+print(data_bicycle['Cost_of_Bike'].notnull().sum()) #21584
 
 # For Bike_Model, fill missing with "UNKNOWN"
 # check how many null before fill the missing 
-print(data_bicycle_group09['Bike_Model'].isnull().sum().sum()) #8140
-data_bicycle_group09['Bike_Model'].fillna('UNKNOWN', inplace= True)
+print(data_bicycle['Bike_Model'].isnull().sum().sum()) #8140
+data_bicycle['Bike_Model'].fillna('UNKNOWN', inplace= True)
 # check how many null after fill the missing 
-print(data_bicycle_group09['Bike_Model'].isnull().sum())  #0
+print(data_bicycle['Bike_Model'].isnull().sum())  #0
 
 
 # For Bike_Colour, fill missing with "UNKNOWN"
 # check how many null before fill the missing 
-print(data_bicycle_group09['Bike_Colour'].isnull().sum().sum()) #1729
-data_bicycle_group09['Bike_Colour'].fillna('UNKNOWN', inplace= True)
+print(data_bicycle['Bike_Colour'].isnull().sum().sum()) #1729
+data_bicycle['Bike_Colour'].fillna('UNKNOWN', inplace= True)
 # check how many null after fill the missing 
-print(data_bicycle_group09['Bike_Colour'].isnull().sum())  #0
+print(data_bicycle['Bike_Colour'].isnull().sum())  #0
 
-
+# Visualization
+import scikitplot as skplt
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from matplotlib import pyplot as plt
 #create a scatterplot
-fig_Premise_Cost = data_bicycle_group09.plot(kind='scatter',x='Premise_Type',y='Cost_of_Bike')
-fig_Location_Cost = data_bicycle_group09.plot(kind='scatter',x='Location_Type',y='Cost_of_Bike')
-fig_Division_Cost = data_bicycle_group09.plot(kind='scatter',x='Division',y='Cost_of_Bike')
+fig_Premise_Cost = data_bicycle.plot(kind='scatter',x='Premise_Type',y='Cost_of_Bike')
+fig_Location_Cost = data_bicycle.plot(kind='scatter',x='Location_Type',y='Cost_of_Bike')
+fig_Division_Cost = data_bicycle.plot(kind='scatter',x='Division',y='Cost_of_Bike')
 
 
 # Save the scatter plot
@@ -105,13 +127,13 @@ fig_Premise_Cost.figure.savefig(figfullpath)
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist_year= plt.hist(data_bicycle_group09['Occurrence_Year'],bins=12)
+hist_year= plt.hist(data_bicycle['Occurrence_Year'],bins=12)
 plt.xlabel('Occurrence_Year')
 plt.ylabel('and Stolen')
 plt.title('Occurrence_Year and Stolen')
 
 import matplotlib.pyplot as plt
-hist_month= plt.hist(data_bicycle_group09['Occurrence_Month'],bins=12)
+hist_month= plt.hist(data_bicycle['Occurrence_Month'],bins=12)
 plt.xlabel('Occurrence_Month')
 plt.ylabel('and Stolen')
 plt.title('Occurrence_Month and Stolen')
@@ -119,27 +141,27 @@ plt.title('Occurrence_Month and Stolen')
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist= plt.hist(data_bicycle_group09['Occurrence_Time'],bins=24)
+hist= plt.hist(data_bicycle['Occurrence_Time'],bins=24)
 plt.xlabel('Occurrence_Time')
 plt.ylabel('and Stolen')
 plt.title('Occurrence_Time and Stolen')
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist_location= plt.hist(data_bicycle_group09['Location_Type'],bins=12)
+hist_location= plt.hist(data_bicycle['Location_Type'],bins=12)
 plt.xlabel('Location_Type')
 plt.ylabel('and Stolen')
 plt.title('Location_Type and Stolen')
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist_Premise= plt.hist(data_bicycle_group09['Premise_Type'],bins=12)
+hist_Premise= plt.hist(data_bicycle['Premise_Type'],bins=12)
 plt.xlabel('Premise_Type')
 plt.ylabel('Stolen')
 plt.title('Premise_Type and Stolen')
 
 import matplotlib.pyplot as plt
-hist_Division= plt.hist(data_bicycle_group09['Division'],bins=12)
+hist_Division= plt.hist(data_bicycle['Division'],bins=12)
 plt.xlabel('Division')
 plt.ylabel('Stolen')
 plt.title('Division and Stolen')
@@ -147,25 +169,25 @@ plt.title('Division and Stolen')
 
 # Plot a boxplot
 import matplotlib.pyplot as plt
-plt.boxplot(data_bicycle_group09['Occurrence_Day'])
+plt.boxplot(data_bicycle['Occurrence_Day'])
 plt.ylabel('Occurrence_Day')
 plt.title('Box Plot of Occurrence_Day')
 
 # Plot a boxplot
 import matplotlib.pyplot as plt
-plt.boxplot(data_bicycle_group09['Cost_of_Bike'])
+plt.boxplot(data_bicycle['Cost_of_Bike'])
 plt.ylabel('Cost_of_Bike')
 plt.title('Box Plot of Cost_of_Bike')
 
 # Plot a boxplot
 import matplotlib.pyplot as plt
-plt.boxplot(data_bicycle_group09['X'])
+plt.boxplot(data_bicycle['X'])
 plt.ylabel('X')
 plt.title('Box Plot of X')
 
 # Plot a boxplot
 import matplotlib.pyplot as plt
-plt.boxplot(data_bicycle_group09['Y'])
+plt.boxplot(data_bicycle['Y'])
 plt.ylabel('Y')
 plt.title('Box Plot of Y')
 
