@@ -64,6 +64,8 @@ median = df_g9['Cost_of_Bike'].median()
 print(median)
 # fill missing value with median
 df_g9['Cost_of_Bike'].fillna(median, inplace= True)
+df_g9['Cost_of_Bike'].dtype #float
+df_g9['Cost_of_Bike'].unique() #still has nan need further improvement
 print(df_g9['Cost_of_Bike'].isnull().sum())  #0 check after fill na will median
 
 print(len(df_g9)-df_g9.count())  # 0 all filled
@@ -77,14 +79,13 @@ df_g9_time = df_g9[['Occurrence_Year','Occurrence_Month', 'Occurrence_Day', 'Occ
 Occurrence_Time_list = df_g9_time['Occurrence_Time']
 def convertToTimeFrame(Occurrence_Time):
     hour = int(str(Occurrence_Time).split(':')[0])
-    return int(hour/2)
-    
+    return int(hour/2)    
     
 timeFrame =[0] *12
 for x in Occurrence_Time_list:
     timeFrame[convertToTimeFrame(x)] +=1
 
-print(timeFrame)  #[2847, 5027, 6835, 6875]
+print(timeFrame)  #[1727, 673, 447, 927, 2379, 1721, 2271, 2067, 2497, 2717, 2180, 1978]
     
 
 
@@ -96,49 +97,83 @@ df_g9_offence = df_g9[['Primary_Offence', 'Status']]
 
 
 # Values and Labels:
-values = df_g9["Division"].value_counts() 
-labels = df_g9["Division"].value_counts().keys() 
-print(values)
-print(labels)
+##location
+    
+df_g9["Division"].value_counts()
+df_g9["Division"].value_counts().head(5) 
+df_g9["Division"].value_counts().tail(5) 
+df_g9["Division"].value_counts().keys() 
 df_g9['Division'].describe()
+df_g9['Division'].unique()
 
-
-values = df_g9["Neighbourhood"].value_counts() 
-labels = df_g9["Neighbourhood"].value_counts().keys() 
-print(values)
-print(labels)
-df_g9['Neighbourhood'].describe()
-
-
+df_g9["Neighbourhood"].value_counts()
+df_g9["Neighbourhood"].value_counts().head(10) 
+df_g9["Neighbourhood"].value_counts().tail(10) 
+df_g9["Neighbourhood"].value_counts().keys()
 df_g9['Neighbourhood'].describe()
 df_g9['Neighbourhood'].unique()
 
-df_g9['Premise_Type'].describe()
-df_g9['Premise_Type'].unique()
 
+df_g9['Premise_Type'].value_counts()  # 5 type
+
+df_g9['Location_Type'].value_counts()  # 44 ypes
+df_g9['Location_Type'].value_counts().head(10)
+df_g9['Location_Type'].value_counts().tail(10)
 df_g9['Location_Type'].describe()
 df_g9['Location_Type'].unique()
 
+
+###bike feature
+df_g9['Bike_Make'].value_counts() # 725
+df_g9['Bike_Make'].value_counts().head(20)
+df_g9['Bike_Make'].value_counts().tail(50)
 df_g9['Bike_Make'].describe()
 df_g9['Bike_Make'].unique()
 
+
+df_g9['Bike_Colour'].value_counts().head(50)
+df_g9['Bike_Colour'].value_counts() #233
 df_g9['Bike_Colour'].describe()
 df_g9['Bike_Colour'].unique()
 
 df_g9['Cost_of_Bike'].describe()
 df_g9['Cost_of_Bike'].unique()
 
+df_g9['Cost_of_Bike'].value_counts() #1458
+df_g9['Cost_of_Bike'].value_counts().head(10)
+df_g9['Cost_of_Bike'].describe()
+df_g9['Cost_of_Bike'].unique()
+
+df_g9['Bike_Make'].value_counts() #725
+df_g9['Bike_Make'].value_counts().head(10)
+df_g9['Bike_Make'].value_counts().tail()
+df_g9['Bike_Make'].unique()
 df_g9['Bike_Make'].describe()
 df_g9['Bike_Make'].unique()
 
+df_g9['Bike_Type'].value_counts() #13
+df_g9['Bike_Type'].value_counts().head(10)
+df_g9['Bike_Type'].value_counts().tail()
+df_g9['Bike_Type'].unique()
 df_g9['Bike_Type'].describe()
 df_g9['Bike_Type'].unique()
 
+
+df_g9['Bike_Speed'].value_counts() #62
+df_g9['Bike_Speed'].value_counts().head(10)
+df_g9['Bike_Speed'].value_counts().tail()
+df_g9['Bike_Speed'].unique()
 df_g9['Bike_Speed'].describe()
-df_g9['Bike_Speed'].describe()
 
+###['Occurrence_Year','Occurrence_Month', 'Occurrence_Day', 'Occurrence_Time','dayofweek',
 
+df_g9['Occurrence_Year'].value_counts() #6
 
+df_g9['Occurrence_Month'].value_counts() #12
+
+df_g9['Occurrence_Day'].value_counts() #30
+
+df_g9['dayofweek'].value_counts() #7
 
 
 # Visualization
