@@ -29,8 +29,11 @@ data_bicycle.describe
 data_bicycle.dtypes
 data_bicycle.head(5)
 
+data_bicycle["datetime"] = pd.to_datetime(data_bicycle["Occurrence_Date"])
+data_bicycle['dayofweek'] =  data_bicycle["datetime"].dt.dayofweek
+
 #drop unnecessary columns
-df_g9 = data_bicycle.drop(columns = ['X', 'Y', 'FID','Index_', 'event_unique_id','Occurrence_Time'])
+df_g9 = data_bicycle.drop(columns = ['X', 'Y', 'FID','Index_', 'event_unique_id','Occurrence_Date','Hood_ID','City'])
 pd.set_option('display.max_columns',15)
 print(df_g9.columns.values)
 print(df_g9.shape)
@@ -39,73 +42,104 @@ print(df_g9.describe)
 print(df_g9.dtypes) 
 print(df_g9.head(5))   
 
-df_g9['datetime'] = pd.to_datetime(df_g9[])
+###check missing value and fill the missing values
+#check for null values
+print(len(df_g9)-df_g9.count())  #Only bike model and bike color and bike cost has some  null values
 
-
-
-
-
-data_bicycle['Division'].describe()
-data_bicycle['Division'].unique()
-grouped = data_bicycle.groupby('Division')
-grouped.groups
-
-data_bicycle['Neighbourhood'].describe()
-data_bicycle['Neighbourhood'].unique()
-
-data_bicycle['Premise_Type'].describe()
-data_bicycle['Premise_Type'].unique()
-
-data_bicycle['Location_Type'].describe()
-data_bicycle['Location_Type'].unique()
-
-data_bicycle['Bike_Make'].describe()
-data_bicycle['Bike_Make'].unique()
-
-data_bicycle['Bike_Colour'].describe()
-data_bicycle['Bike_Colour'].unique()
-
-data_bicycle['Cost_of_Bike'].describe()
-data_bicycle['Cost_of_Bike'].unique()
-
-data_bicycle['Bike_Make'].describe()
-data_bicycle['Bike_Make'].unique()
-
-data_bicycle['Bike_Type'].describe()
-data_bicycle['Bike_Type'].unique()
-
-data_bicycle['Bike_Speed'].describe()
-data_bicycle['Bike_Speed'].describe()
-
-
-data_bicycle = pd.read_csv(fullpath)
-
-# For Cost_of_Bike, fill missing with median
-# check how many null before fill the missing 
-print(data_bicycle['Cost_of_Bike'].isnull().sum()) #1536
-print(data_bicycle['Cost_of_Bike'].notnull().sum()) #20048
-median = data_bicycle['Cost_of_Bike'].median()
-print(median)
-# fill missing value with median
-data_bicycle['Cost_of_Bike'].fillna(median, inplace= True)
+#For Bike model check how many null before fill the missing 
+print(df_g9['Bike_Model'].isnull().sum().sum()) #1729
+df_g9['Bike_Model'].fillna('UNKNOWN', inplace= True)
 # check how many null after fill the missing 
-print(data_bicycle['Cost_of_Bike'].isnull().sum())  #0
-print(data_bicycle['Cost_of_Bike'].notnull().sum()) #21584
-
-# For Bike_Model, fill missing with "UNKNOWN"
-# check how many null before fill the missing 
-print(data_bicycle['Bike_Model'].isnull().sum().sum()) #8140
-data_bicycle['Bike_Model'].fillna('UNKNOWN', inplace= True)
-# check how many null after fill the missing 
-print(data_bicycle['Bike_Model'].isnull().sum())  #0
-
+print(df_g9['Bike_Model'].isnull().sum())  #0
 
 # For Bike_Colour, fill missing with "UNKNOWN"
 # check how many null before fill the missing 
-print(data_bicycle['Bike_Colour'].isnull().sum().sum()) #1729
-data_bicycle['Bike_Colour'].fillna('UNKNOWN', inplace= True)
+print(df_g9['Bike_Colour'].isnull().sum().sum()) #1729
+df_g9['Bike_Colour'].fillna('UNKNOWN', inplace= True)
 # check how many null after fill the missing 
-print(data_bicycle['Bike_Colour'].isnull().sum())  #0
+print(df_g9['Bike_Colour'].isnull().sum())  #0
+
+# fill missing Cost_of_Bike with median
+median = df_g9['Cost_of_Bike'].median()
+print(median)
+# fill missing value with median
+df_g9['Cost_of_Bike'].fillna(median, inplace= True)
+print(df_g9['Cost_of_Bike'].isnull().sum())  #0 check after fill na will median
+
+print(len(df_g9)-df_g9.count())  # 0 all filled
+
+# group the data with bike feature
+df_g9_bike = df_g9[['Bike_Make','Bike_Model', 'Bike_Type', 'Bike_Speed','Bike_Colour','Cost_of_Bike', 'Status']]
+
+# group the data with time 
+# [(0-5:59), (6:00- 11:59), (12:00-5:59), (6-11:59) ]
+df_g9_time = df_g9[['Occurrence_Year','Occurrence_Month', 'Occurrence_Day', 'Occurrence_Time','dayofweek','Status']]
+Occurrence_Time_list = df_g9_time['Occurrence_Time']
+def convertToTimeFrame(Occurrence_Time):
+    hour = int(str(Occurrence_Time).split(':')[0])
+    return int(hour/2)
+    
+    
+timeFrame =[0] *12
+for x in Occurrence_Time_list:
+    timeFrame[convertToTimeFrame(x)] +=1
+
+print(timeFrame)  #[2847, 5027, 6835, 6875]
+    
+
+
+df_g9_location = df_g9[['Division','Neighbourhood', 'Premise_Type', 'Location_Type','Status']]
+
+df_g9_geo = df_g9[['Lat', 'Long','Status']]
+
+df_g9_offence = df_g9[['Primary_Offence', 'Status']]
+
+
+# Values and Labels:
+values = df_g9["Division"].value_counts() 
+labels = df_g9["Division"].value_counts().keys() 
+print(values)
+print(labels)
+df_g9['Division'].describe()
+
+
+values = df_g9["Neighbourhood"].value_counts() 
+labels = df_g9["Neighbourhood"].value_counts().keys() 
+print(values)
+print(labels)
+df_g9['Neighbourhood'].describe()
+
+
+df_g9['Neighbourhood'].describe()
+df_g9['Neighbourhood'].unique()
+
+df_g9['Premise_Type'].describe()
+df_g9['Premise_Type'].unique()
+
+df_g9['Location_Type'].describe()
+df_g9['Location_Type'].unique()
+
+df_g9['Bike_Make'].describe()
+df_g9['Bike_Make'].unique()
+
+df_g9['Bike_Colour'].describe()
+df_g9['Bike_Colour'].unique()
+
+df_g9['Cost_of_Bike'].describe()
+df_g9['Cost_of_Bike'].unique()
+
+df_g9['Bike_Make'].describe()
+df_g9['Bike_Make'].unique()
+
+df_g9['Bike_Type'].describe()
+df_g9['Bike_Type'].unique()
+
+df_g9['Bike_Speed'].describe()
+df_g9['Bike_Speed'].describe()
+
+
+
+
 
 # Visualization
 import scikitplot as skplt
@@ -114,9 +148,9 @@ import seaborn as sns
 
 from matplotlib import pyplot as plt
 #create a scatterplot
-fig_Premise_Cost = data_bicycle.plot(kind='scatter',x='Premise_Type',y='Cost_of_Bike')
-fig_Location_Cost = data_bicycle.plot(kind='scatter',x='Location_Type',y='Cost_of_Bike')
-fig_Division_Cost = data_bicycle.plot(kind='scatter',x='Division',y='Cost_of_Bike')
+fig_Premise_Cost = df_g9.plot(kind='scatter',x='Premise_Type',y='Cost_of_Bike')
+fig_Location_Cost = df_g9.plot(kind='scatter',x='Location_Type',y='Cost_of_Bike')
+fig_Division_Cost = df_g9.plot(kind='scatter',x='Division',y='Cost_of_Bike')
 
 
 # Save the scatter plot
@@ -127,13 +161,13 @@ fig_Premise_Cost.figure.savefig(figfullpath)
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist_year= plt.hist(data_bicycle['Occurrence_Year'],bins=12)
+hist_year= plt.hist(df_g9['Occurrence_Year'],bins=12)
 plt.xlabel('Occurrence_Year')
 plt.ylabel('and Stolen')
 plt.title('Occurrence_Year and Stolen')
 
 import matplotlib.pyplot as plt
-hist_month= plt.hist(data_bicycle['Occurrence_Month'],bins=12)
+hist_month= plt.hist(df_g9['Occurrence_Month'],bins=12)
 plt.xlabel('Occurrence_Month')
 plt.ylabel('and Stolen')
 plt.title('Occurrence_Month and Stolen')
@@ -141,27 +175,27 @@ plt.title('Occurrence_Month and Stolen')
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist= plt.hist(data_bicycle['Occurrence_Time'],bins=24)
+hist= plt.hist(df_g9['Occurrence_Time'],bins=24)
 plt.xlabel('Occurrence_Time')
 plt.ylabel('and Stolen')
 plt.title('Occurrence_Time and Stolen')
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist_location= plt.hist(data_bicycle['Location_Type'],bins=12)
+hist_location= plt.hist(df_g9['Location_Type'],bins=12)
 plt.xlabel('Location_Type')
 plt.ylabel('and Stolen')
 plt.title('Location_Type and Stolen')
 
  # Plot a histogram
 import matplotlib.pyplot as plt
-hist_Premise= plt.hist(data_bicycle['Premise_Type'],bins=12)
+hist_Premise= plt.hist(df_g9['Premise_Type'],bins=12)
 plt.xlabel('Premise_Type')
 plt.ylabel('Stolen')
 plt.title('Premise_Type and Stolen')
 
 import matplotlib.pyplot as plt
-hist_Division= plt.hist(data_bicycle['Division'],bins=12)
+hist_Division= plt.hist(df_g9['Division'],bins=12)
 plt.xlabel('Division')
 plt.ylabel('Stolen')
 plt.title('Division and Stolen')
@@ -169,19 +203,19 @@ plt.title('Division and Stolen')
 
 # Plot a boxplot
 import matplotlib.pyplot as plt
-plt.boxplot(data_bicycle['Occurrence_Day'])
+plt.boxplot(df_g9['Occurrence_Day'])
 plt.ylabel('Occurrence_Day')
 plt.title('Box Plot of Occurrence_Day')
 
 # Plot a boxplot
 import matplotlib.pyplot as plt
-plt.boxplot(data_bicycle['Cost_of_Bike'])
+plt.boxplot(df_g9['Cost_of_Bike'])
 plt.ylabel('Cost_of_Bike')
 plt.title('Box Plot of Cost_of_Bike')
 
 # Plot a boxplot
 import matplotlib.pyplot as plt
-plt.boxplot(data_bicycle['X'])
+plt.boxplot(df_g9['X'])
 plt.ylabel('X')
 plt.title('Box Plot of X')
 
