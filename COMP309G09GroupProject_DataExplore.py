@@ -2,6 +2,7 @@
 """
 Created on Thu Nov 12 16:19:50 2020
 @author: Group09
+https://docs.google.com/presentation/d/e/2PACX-1vQA18l8l1xjQdvxVzzFHxfnMdgYl_mLlue-V2UlPsDO4MUPDqINxTYk71HFHteBwym5qOo9b-UB6fmL/pub?start=true&loop=false&delayms=3000
 """
 
 '''
@@ -107,7 +108,8 @@ print (df_g9_geo)
 # group the data with Primary_Offence
 df_g9_offence = df_g9[['Primary_Offence', 'Status']]
 
-
+###########################################Geo Information
+df_g9_geo = df_g9[['Lat', 'Long','Status']]
 
 # Values and Labels:
 df_g9["Status"].value_counts()  # ['   ', 'RECOVERED', 'STOLEN', 'UNKNOWN']
@@ -134,6 +136,54 @@ ax1.pie(sizes, explode=explode, labels=labels, colors= colors,autopct='%1.1f%%',
 ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.show()
 
+#run in python cmd:    pip install folium
+import matplotlib.pyplot as plt
+import seaborn as snsm
+import folium
+import os
+toronto_map = folium.Map(location=[43.6532,-79.3832],
+                        zoom_start=11,
+                        tiles="OpenStreetMap")
+
+#add Bike Status Stolen data to map
+for i in range(len(df_g9_Stolen)):
+    lat = (df_g9_Stolen['Lat'].array)[i]
+    print(lat)
+    long = (df_g9_Stolen['Long'].array)[i]
+    print(long)
+    folium.CircleMarker(location = [lat, long],ill = True, radius=1,color ='red').add_to(toronto_map)
+
+#add Bike Status Recovered data to map
+for i in range(len(df_g9_Recovered)):
+    lat = (df_g9_Recovered['Lat'].array)[i]
+    print(lat)
+    long = (df_g9_Recovered['Long'].array)[i]
+    print(long)
+    folium.CircleMarker(location = [lat, long],ill = True, radius=1,color ='green').add_to(toronto_map)
+    
+#add Bike Status Unknown data to map
+for i in range(len(df_g9_Unknown)):
+    lat = (df_g9_Unknown['Lat'].array)[i]
+    print(lat)
+    long = (df_g9_Unknown['Long'].array)[i]
+    print(long)
+    folium.CircleMarker(location = [lat, long],ill = True, radius=1,color ='blue').add_to(toronto_map)
+    
+    
+path ="D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/" # change to your local path
+mapfilename = "map_toronto_bike_status.html"
+mapfullpath = os.path.join(path,mapfilename)
+toronto_map.save(mapfullpath)
+
+import matplotlib.pyplot as plt
+df_g9.columns
+# plot a scatter 
+plt.scatter(df_g9['dayofweek'],df_g9['Cost_of_Bike'])
+plt.show()
+# plot a scatter 
+plt.scatter(df_g9['Primary_Offence'],df_g9['Cost_of_Bike'])
+plt.show()
+
 ######################  location factors   
 #*************************Division
 
@@ -146,6 +196,9 @@ df_g9['Division'].unique()
 df_g9_division_top5 =df_g9["Division"].value_counts().head(5) 
 df_g9_division_safest5 =df_g9["Division"].value_counts().tail(5) 
 
+# plot a scatter 
+plt.scatter(df_g9['Division'],df_g9['Cost_of_Bike'])
+plt.show()
 
 #plot-hist
 import matplotlib.pyplot as plt
@@ -505,6 +558,8 @@ plt.ylabel('Stolen')
 plt.title('Hour of a Day and Stolen')
 plt.show()
 
+
+
  # Plot a histogram
 import matplotlib.pyplot as plt
 hist_DayofHour= plt.hist(df_g9['dayofhour'],bins=24, width= 0.5)
@@ -530,28 +585,7 @@ plt.show()
 
 
 
-###########################################Geo Information
-df_g9_geo = df_g9[['Lat', 'Long','Status']]
-#run in python cmd:    pip install folium
-import matplotlib.pyplot as plt
-import seaborn as snsm
-import folium
-import os
-toronto_map = folium.Map(location=[43.6532,-79.3832],
-                        zoom_start=11,
-                        tiles="OpenStreetMap")
-print(df_g9_geo)
-len(df_g9_geo)
-for i in range(len(df_g9_geo)):
-    lat = df_g9['Lat'][i]
-    print(lat)
-    long = df_g9['Long'][i]
-    print(long)
-    folium.CircleMarker(location = [lat, long],ill = True, radius=1,color ='red').add_to(toronto_map)
-path ="D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/" # change to your local path
-mapfilename = "map_toronto_bike_stolen.html"
-mapfullpath = os.path.join(path,mapfilename)
-toronto_map.save(mapfullpath)
+
 
 
 
