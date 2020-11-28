@@ -526,14 +526,13 @@ toronto_map.save(mapfullpath)
 
 
 
+# x =  df_g9_hour.index
+import pickle 
+x= ['18', '17', '12', '9', '19']
+pickle.dump(x,open('C:/Users/User/Documents/pickle.pkl', 'wb'))
+print("Models columns dumped!")
 
-
-
-
-
-
-
-
+pickle.load(open('C:/Users/User/Documents/pickle.pkl' ,'rb')) 
 
 
 '''
