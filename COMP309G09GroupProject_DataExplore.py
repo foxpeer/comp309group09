@@ -134,7 +134,6 @@ fig1, ax1 = plt.subplots()
 ax1.pie(sizes, explode=explode, labels=labels, colors= colors,autopct='%1.1f%%',
         shadow=True, startangle=0)
 ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-plt.legend(labels,loc=1)
 plt.show()
 
 #run in python cmd:    pip install folium
@@ -170,7 +169,7 @@ for i in range(len(df_g9_Unknown)):
     print(long)
     folium.CircleMarker(location = [lat, long],ill = True, radius=1,color ='blue').add_to(toronto_map)
     
-
+    
 path ="D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/" # change to your local path
 mapfilename = "map_toronto_bike_status.html"
 mapfullpath = os.path.join(path,mapfilename)
