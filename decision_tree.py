@@ -6,7 +6,7 @@
 # Import data
 import pandas as pd
 import os
-path = "C:/Users/xingl/Downloads/comp309group09-main (1)/comp309group09-main"
+path = "C:/Users/User/Desktop/COMP309/group"
 filename = 'Bicycle_Thefts.csv'
 fullpath = os.path.join(path,filename)
 bicycle_data = pd.read_csv(fullpath,sep=',')
@@ -20,8 +20,10 @@ print(bicycle_data.head(5))
 
 # Get predictors and target
 colnames=bicycle_data.columns.values.tolist()
-predictors=colnames[:4]
-target=colnames[4]
+predictors=[colnames[i] for i in (11,22)]
+target=colnames[21]
+print(predictors)
+print(target)
 
 import numpy as np
 bicycle_data['is_train'] = np.random.uniform(0, 1, len(bicycle_data)) <= .75
@@ -30,15 +32,17 @@ bicycle_data['is_train'] = np.random.uniform(0, 1, len(bicycle_data)) <= .75
 train, test = bicycle_data[bicycle_data['is_train']==True], bicycle_data[bicycle_data['is_train']==False]
 print('Number of observations in the training data:', len(train))
 print('Number of observations in the test data:',len(test))
-trainX=train[predictors]
-trainY=train[target]
-testX=test[predictors]
-testY=test[target]
+
 #Create a decision tree and fit
 from sklearn.tree import DecisionTreeClassifier
-dt_bicycle_model = DecisionTreeClassifier(criterion='entropy',min_samples_split=20, random_state=99)
-dt_bicycle_model.fit(train[predictors], train[target])
-preds=dt_bicycle_model.predict(test[predictors])
+dt_bicycle = DecisionTreeClassifier(criterion='entropy',min_samples_split=20, random_state=99)
+dt_bicycle.fit(train[predictors], train[target])
+preds=dt_bicycle.predict(test[predictors])
+pd.crosstab(test['Status'],preds,rownames=['Actual'],colnames=['Predictions'])
+from sklearn.tree import export_graphviz
+with open('C:/Users/User/Desktop/bicycle_dtree.dot', 'w') as dotfile:
+    export_graphviz(dt_bicycle, out_file = dotfile)
+dotfile.close()
 
 """
 @author: Xinglong Lu

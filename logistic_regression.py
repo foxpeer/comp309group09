@@ -18,33 +18,47 @@ print(bicycle_data.describe())
 print(bicycle_data.dtypes) 
 print(bicycle_data.head(5))
 
-# Logistic regression
-# Convert string to num & Replace Nan with mean value or 0
+## Data transformations
+# Handling missing data 
+# Convert string to num & Replace missimg value with mean or 0
 bicycle_data['Division'].fillna(value=bicycle_data['Division'].mean(), inplace=True)
 bicycle_data['Hood_ID'].fillna(value=bicycle_data['Hood_ID'].mean(), inplace=True)
 bicycle_data['Status'] = bicycle_data['Status'].map({'UNKNOWN':0,'STOLEN':0,'RECOVERED':1})
 bicycle_data['Status'] = bicycle_data['Status'].fillna(0)
 
-# Extract data
-features = bicycle_data[['Division', 'Hood_ID']]
-status = bicycle_data['Status']
+# Categorical data management : Created dummy values 
+data_dummies = pd.get_dummies(bicycle_data)
 
+# Categorical data management : Remove unneccessary columns
+data_dummies.drop(data_dummies.columns.difference(['Status','Division','Hood_ID']), 1, inplace=True)
+print(data_dummies.head())
+
+## Feature selection
+features = data_dummies[['Division','Hood_ID']]
+status = data_dummies['Status']
+
+# Assigned X (features) and Y (target) / numpy.ndarray
+X = features.values
+Y = status.values
+print((X.shape,Y.shape))
+type(Y)
+type(X)
+
+## Train, test data splitting
 from sklearn.model_selection import train_test_split
-train_features, test_features, train_labels, test_labels = train_test_split(features, status)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=0)
 
-# Modeling
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
-train_features = scaler.fit_transform(train_features)
-test_features = scaler.transform(test_features)
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
 from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
-model.fit(train_features, train_labels)
+model.fit(X_train, Y_train)
 
-# Test accuracy
-print(model.score(train_features, train_labels))
-print(model.score(test_features, test_labels))
+print(model.score(X_train, Y_train))
+print(model.score(X_test, Y_test))
 
 # Test coefficients
 print(model.coef_)
