@@ -8,7 +8,8 @@ Created on Sat Nov 28 18:03:08 2020
 import pandas as pd
 import numpy as np
 import os
-path = "C:/Users/User/Desktop/COMP309/group"
+#path = "C:/Users/User/Desktop/COMP309/group"
+path = "D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/"
 filename = 'Bicycle_Thefts.csv'
 fullpath = os.path.join(path,filename)
 bicycle_data = pd.read_csv(fullpath,sep=',')
