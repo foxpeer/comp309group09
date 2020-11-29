@@ -62,10 +62,12 @@ if __name__ == '__main__':
     except:
         port = 12345 # If you don't provide any port the port will be set to 12345
  
+    #change to your local path
     modelpath = "D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/model.pkl"
     lr = joblib.load(modelpath) # Load "model file model.pkl"
     print ('Model loaded')
     logger.info('Model loaded')
+    #change to your local path
     modelcolumnpath = 'D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/model_columns.pkl'
     model_columns = joblib.load(modelcolumnpath) # Load "model_columns.pkl"
     print ('Model columns loaded')
