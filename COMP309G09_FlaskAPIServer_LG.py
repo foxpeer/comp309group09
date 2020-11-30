@@ -24,7 +24,7 @@ logger.setLevel(logging.DEBUG)
 
 # Your API definition
 app = Flask(__name__)
-@app.route("/predict", methods=['GET','POST']) #use decorator pattern for the route
+@app.route("/lg9", methods=['GET','POST']) #use decorator pattern for the route
 def predict():
     if lr:
         try:
@@ -60,15 +60,15 @@ if __name__ == '__main__':
     try:
         port = int(sys.argv[1]) # This is for a command-line input
     except:
-        port = 12345 # If you don't provide any port the port will be set to 12345
+        port = 12999 # If you don't provide any port the port will be set to 12345
  
     #change to your local path
-    modelpath = "D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/model.pkl"
+    modelpath = "D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/model_lr.pkl"
     lr = joblib.load(modelpath) # Load "model file model.pkl"
     print ('Model loaded')
     logger.info('Model loaded')
     #change to your local path
-    modelcolumnpath = 'D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/model_columns.pkl'
+    modelcolumnpath = 'D:/CentennialWu/2020Fall/COMP309Data/GroupProject2/model_columns_lr.pkl'
     model_columns = joblib.load(modelcolumnpath) # Load "model_columns.pkl"
     print ('Model columns loaded')
     logger.info('Model columns loaded')

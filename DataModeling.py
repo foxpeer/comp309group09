@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author: 300888467 Nayul Kim
+@author: Group 9 
 2. Data modelling: 
 2.1 Data transformations – includes handling missing data, categorical data management, data normalization and standardizations as needed.
 2.2 Feature selection – use pandas and sci-kit learn.
@@ -12,7 +12,7 @@
 import pandas as pd
 import os
 import numpy as np
-path = "C:/Users/User/Desktop/COMP309/group"
+path = "C:/Users/User/Desktop/COMP309/group" # change to local path
 filename = 'Bicycle_Thefts.csv'
 fullpath = os.path.join(path,filename)
 bicycle_data = pd.read_csv(fullpath,sep=',')
